@@ -1,0 +1,26 @@
+﻿@using PayTrPaymentSample.Data.Entities
+@model Order
+@{
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h1>OrderId: @Model.Id</h1>
+            <h2>UserId: @Model.UserId</h2>
+            <h3>Products:</h3>
+            <ul>
+                @foreach (var item in Model.OrderDetails)
+                {
+                    <li>@item.Product.Name - @item.Product.Price₺  x @item.Quantity </li>
+                }
+            </ul>
+        </div>
+        <div class="col-12">
+            <b>TOTAL: @Model.CalculateOrder().ToPrice() TL</b>
+        </div>
+        <div class="col-12">
+            <a class="btn btn-primary" asp-controller="payment" asp-action="index" asp-route-orderId="@Model.Id">Complete Order</a>
+        </div>
+    </div>
+</div>

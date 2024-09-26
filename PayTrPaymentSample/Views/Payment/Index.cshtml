@@ -1,0 +1,41 @@
+﻿@model PaymentVM
+@{
+    ViewData["Title"] = "Payment";
+    //Layout = null;
+}
+
+<div class="container">
+    <script src="https://www.paytr.com/js/iframeResizer.min.js"></script>
+    <iframe src="" id="paytrIframe" frameborder="0" scrolling="no" style="width: 100%;"></iframe>
+    <script>iFrameResize({}, '#paytrIframe');</script>
+    <p id="error-text"></p>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    $.ajax({
+                        type: 'get',
+                        url: '/payment/getPaymentIFrameUrl',
+                        data: { orderId: @Model.OrderId, userIp: data.ip },
+                        async: true,
+                        beforeSend: function () {},
+                        success: function (data) {
+                            console.log(data);
+                            $("#paytrIframe").attr("src", data.iframeUrl);
+                        },
+                        error: function (xhr) {
+                            console.log(xhr.statusText + xhr.responseText);
+                            $("#error-text").html(xhr.statusText + xhr.responseText);
+                        },
+                        complete: function () {},
+                    });
+                })
+                .catch(error => console.error('Error fetching IP:', error));
+        });
+    </script>
+}
+
