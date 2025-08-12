@@ -166,6 +166,8 @@ namespace PayTrPaymentSample.Controllers
         [HttpGet("payment/success/{orderId}")]
         public async Task<IActionResult> Success(string orderId)
         {
+            Response.Headers.Remove("X-Frame-Options");
+
             return View();
         }
 
@@ -176,6 +178,8 @@ namespace PayTrPaymentSample.Controllers
         [HttpGet("payment/error/{orderId}")]
         public async Task<IActionResult> Error(string orderId)
         {
+            Response.Headers.Remove("X-Frame-Options");
+
             return View();
         }
     }
